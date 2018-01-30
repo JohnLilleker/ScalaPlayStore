@@ -4,10 +4,12 @@
 
 # Home page
 GET     /                           controllers.Application.index
+GET     /info                       controllers.Application.info
 
 # item pages
 GET     /items                      controllers.ItemController.allItems
 GET     /item/:id                   controllers.ItemController.showItem(id: Int)
+GET     /item/:id/purchase          controllers.ItemController.buyItem(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

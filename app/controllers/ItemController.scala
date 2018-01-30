@@ -6,10 +6,10 @@ import play.api.mvc._
 class ItemController extends Controller {
 
   val items = List(
-    Item("Potion", 100, "Heals 10HP", 20),
-    Item("Super Potion", 300, "Heals 50HP", 15),
-    Item("Hyper Potion", 1500, "Heals 100HP", 3),
-    Item("Revive", 1000, "Heals a fainted Pokemon", 0)
+    Item(1, "Potion", 100, "Heals 10HP", 20),
+    Item(2, "Super Potion", 300, "Heals 50HP", 15),
+    Item(3, "Hyper Potion", 1500, "Heals 100HP", 3),
+    Item(4, "Revive", 1000, "Heals a fainted Pokemon", 0)
   )
 
 
@@ -18,9 +18,10 @@ class ItemController extends Controller {
   }
 
   def showItem(id: Int) = Action {implicit request: Request[AnyContent] =>
-    if (id < 0 || id >= items.size)
-      NotFound("No such item")
-    else
-      Ok(views.html.itemsPages.showItem(items(id)))
+    Ok(views.html.itemsPages.showItem(items.filter(_.id == id).head))
+  }
+
+  def buyItem(id: Int) = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.itemsPages.buyItem(items.filter(_.id == id).head))
   }
 }

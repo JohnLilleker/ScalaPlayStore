@@ -1,8 +1,8 @@
 @(items: List[models.Item])
 
-@display(id: Int, item: Item) = {
+@display(item: Item) = {
     <tr>
-        <td><a href="@routes.ItemController.showItem(id)">@item.name</a></td>
+        <td><a href="@routes.ItemController.showItem(item.id)">@item.name</a></td>
         <td>@item.price</td>
         <td>
         @if(item.stock < 1) {
@@ -23,12 +23,12 @@
                 <tr>
                     <th>Item name</th>
                     <th>Item price</th>
-                    <th>Item in stock?</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @for(i <- items.indices){
-                    @display(i, items(i))
+                @for(i <- items){
+                    @display(i)
                 }
             </tbody>
         </table>

@@ -1,3 +1,3 @@
 package models
 
-case class Item(name: String, price: Int, description: String, stock: Int)
+case class Item(id: Int, name: String, price: Int, description: String, stock: Int)
