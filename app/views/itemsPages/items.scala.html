@@ -1,0 +1,36 @@
+@(items: List[models.Item])
+
+@display(id: Int, item: Item) = {
+    <tr>
+        <td><a href="@routes.ItemController.showItem(id)">@item.name</a></td>
+        <td>@item.price</td>
+        <td>
+        @if(item.stock < 1) {
+            <span class="badge badge-danger">Out of stock</span>
+        }
+        </td>
+    </tr>
+}
+
+@main("Pokemart Online - Items") {
+    <h4>This is the items page</h4>
+
+    @if(items.isEmpty) {
+        <h2>No items to display</h2>
+    } else {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Item name</th>
+                    <th>Item price</th>
+                    <th>Item in stock?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(i <- items.indices){
+                    @display(i, items(i))
+                }
+            </tbody>
+        </table>
+    }
+}

@@ -1,0 +1,29 @@
+@(item: models.Item)
+
+@main("Pokemart Online - View Item") {
+    <h2>@item.name</h2>
+    <br>
+    <p>
+        <b>Price: </b>
+        @item.price
+    </p>
+    <p>
+        <b>Description</b>
+        @item.description
+    </p>
+    <p>
+        @if(item.stock > 10) {
+            Currently in Stock
+        } else {
+            @if(item.stock > 0) {
+                Hurry! There are only @item.stock left!
+            } else {
+                Out of stock
+            }
+        }
+    </p>
+    <br>
+    <button class="btn btn-outline-dark">I don't really do anything</button>
+    <br><br>
+    <a href="@routes.ItemController.allItems()">Back</a>
+}
