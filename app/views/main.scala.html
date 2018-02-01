@@ -21,6 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="@routes.Application.info()">Trainer information</a>
                 </li>
+                @if(models.Basket.items.nonEmpty) {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@routes.BasketController.viewBasket()">My basket</a>
+                    </li>
+                }
             </ul>
 
         </nav>

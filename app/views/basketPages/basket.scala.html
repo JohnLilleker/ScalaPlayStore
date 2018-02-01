@@ -1,0 +1,23 @@
+@(basket: Map[Item, Int])
+
+@main("Pokemart Online - Basket") {
+    <h2>Show basket</h2>
+
+    @if(basket.isEmpty) {
+        <h5>Your basket is Empty...</h5>
+    } else {
+        @for((item, quantity) <- basket) {
+            <p>
+                @item.name
+                @{item.price * quantity}
+                @quantity
+                <a href="@routes.BasketController.removeItem(item.id)"> Remove</a>
+            </p>
+        }
+        <br>
+        <p>
+            <b>Total cost:</b>
+            @{basket.view.map {case (i, n) => i.price * n}.sum}
+        </p>
+    }
+}

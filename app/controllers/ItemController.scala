@@ -1,28 +1,36 @@
 package controllers
 
+import javax.inject.Inject
+
 import models.Item
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 
-class ItemController extends Controller {
-
-  val items = List(
-    Item(1, "Potion", 100, "Heals 10HP", 20),
-    Item(2, "Super Potion", 300, "Heals 50HP", 15),
-    Item(3, "Hyper Potion", 1500, "Heals 100HP", 3),
-    Item(4, "Revive", 1000, "Heals a fainted Pokemon", 0)
-  )
-
+class ItemController @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   def allItems = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.itemsPages.items(items))
+    Ok(views.html.itemsPages.items(Item.items))
   }
 
   def showItem(id: Int) = Action {implicit request: Request[AnyContent] =>
-    Ok(views.html.itemsPages.showItem(items.filter(_.id == id).head))
+    val item = Item.getItem(id)
+    if (item.isDefined)
+      Ok(views.html.itemsPages.showItem(item.get))
+    else
+      NotFound("No such item")
   }
 
-  def buyItem(id: Int) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.itemsPages.buyItem(items.filter(_.id == id).head))
+  def newItem = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.itemsPages.newItem(Item.createItemForm))
+  }
+
+  def createItem = Action { implicit request: Request[AnyContent] =>
+    Item.createItemForm.bindFromRequest.fold({errorForm =>
+      BadRequest(views.html.itemsPages.newItem(errorForm))
+    }, {item =>
+      Item.items.append(item)
+      Redirect(routes.ItemController.allItems())
+    })
   }
 }
 

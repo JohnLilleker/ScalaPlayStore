@@ -1,0 +1,15 @@
+@(form: Form[Item])(implicit messages: Messages)
+
+@main("Pokemart Online - New Item") {
+    <h2>Create a New Item</h2>
+
+    @helper.form(routes.ItemController.createItem()) {
+        <input type="hidden" value="@Item.items.size" name="id"/>
+        @helper.inputText(form("name"), '_label -> "Name", '_showConstraints -> false)
+        @helper.inputText(form("price"), '_label -> "Price per Item", '_showConstraints -> false)
+        @helper.textarea(form("description"), '_label -> "Item Description", 'cols -> 75, 'rows -> 5, '_showConstraints -> false)
+        @helper.inputText(form("stock"), '_label -> "Initial stock level", '_showConstraints -> false)
+        <button type="submit" class="btn">Create Item</button>
+    }
+    <a href="@routes.ItemController.allItems()">Back</a>
+}

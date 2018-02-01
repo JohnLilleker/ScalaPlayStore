@@ -1,11 +1,11 @@
-@(items: List[models.Item])
+@(items: scala.collection.mutable.ArrayBuffer[models.Item])
 
-@display(item: Item) = {
+@display(id: Int, item: Item) = {
     <tr>
-        <td><a href="@routes.ItemController.showItem(item.id)">@item.name</a></td>
+        <td><a href="@routes.ItemController.showItem(id)">@item.name</a></td>
         <td>@item.price</td>
         <td>
-        @if(item.stock < 1) {
+        @if(!item.inStock) {
             <span class="badge badge-danger">Out of stock</span>
         }
         </td>
@@ -13,10 +13,10 @@
 }
 
 @main("Pokemart Online - Items") {
-    <h4>This is the items page</h4>
+    <h2>This is the items page</h2>
 
     @if(items.isEmpty) {
-        <h2>No items to display</h2>
+        <h5>No items to display</h5>
     } else {
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -27,10 +27,12 @@
                 </tr>
             </thead>
             <tbody>
-                @for(i <- items){
-                    @display(i)
+                @for(i <- items.indices){
+                    @display(i, items(i))
                 }
             </tbody>
         </table>
     }
+    <br>
+    <a href="@routes.ItemController.newItem()" class="btn btn-outline-info">New Item</a>
 }

@@ -15,18 +15,16 @@
         @if(item.stock >= 10) {
             Currently in stock
         } else {
-            @if(item.stock > 0) {
+            @if(item.inStock) {
                 Hurry! There are only @item.stock left!
             } else {
                 Out of stock
             }
         }
     </p>
-    <br>
-    @if(item.stock > 0) {
-        <a href="@routes.ItemController.buyItem(item.id)" class="btn btn-outline-dark">Buy this item</a>
-    } else {
-        <button class="btn btn-outline-dark">I don't really do anything</button>
+    @if(item.inStock) {
+        <br>
+        <a class="btn btn-outline-dark" href="@routes.BasketController.addItem(item.id)">Add to Basket</a>
     }
     <br><br>
     <a href="@routes.ItemController.allItems()">Back</a>
