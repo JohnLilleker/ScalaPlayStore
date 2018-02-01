@@ -25,3 +25,4 @@ class ItemController extends Controller {
     Ok(views.html.itemsPages.buyItem(items.filter(_.id == id).head))
   }
 }
+
