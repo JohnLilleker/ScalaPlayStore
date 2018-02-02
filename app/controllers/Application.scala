@@ -11,5 +11,4 @@ class Application extends Controller {
   def info = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.info())
   }
-
 }

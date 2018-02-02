@@ -7,15 +7,19 @@ GET     /                           controllers.Application.index
 GET     /info                       controllers.Application.info
 
 # item pages
-GET     /items                      controllers.ItemController.allItems
+GET     /items                      controllers.ItemController.allItems(search_term: Option[String] ?= None)
 GET     /item/$id<[0-9]+>           controllers.ItemController.showItem(id: Int)
 GET     /item/new                   controllers.ItemController.newItem
 POST    /item/create                controllers.ItemController.createItem
+GET     /item/edit/$id<[0-9]+>      controllers.ItemController.editItem(id: Int)
+POST    /item/update                controllers.ItemController.updateItem
+POST    /item/search                controllers.ItemController.search
 
 # basket pages
 GET     /basket                     controllers.BasketController.viewBasket
-GET     /basket/add/$id<[0-9]+>     controllers.BasketController.addItem(id: Int)
+POST    /basket/add/                controllers.BasketController.addItem
 GET     /basket/remove/$id<[0-9]+>  controllers.BasketController.removeItem(id: Int)
+GET     /basket/remove              controllers.BasketController.clearBasket
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

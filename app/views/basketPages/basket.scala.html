@@ -1,23 +1,45 @@
 @(basket: Map[Item, Int])
 
 @main("Pokemart Online - Basket") {
-    <h2>Show basket</h2>
+    <h2>Your Basket</h2>
 
     @if(basket.isEmpty) {
-        <h5>Your basket is Empty...</h5>
-    } else {
-        @for((item, quantity) <- basket) {
-            <p>
-                @item.name
-                @{item.price * quantity}
-                @quantity
-                <a href="@routes.BasketController.removeItem(item.id)"> Remove</a>
-            </p>
-        }
         <br>
-        <p>
-            <b>Total cost:</b>
-            @{basket.view.map {case (i, n) => i.price * n}.sum}
-        </p>
+        <h4>Your basket is Empty...</h4>
+        <h5>Why not go and <a href="@routes.ItemController.allItems()">find some items</a> to fill it?</h5>
+    } else {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Item name</th>
+                    <th>Item price</th>
+                    <th>Quantity</th>
+                    <th>Total cost</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for((item, quantity) <- basket) {
+                    <tr>
+                        <td><a href="@routes.ItemController.showItem(item.id)">@item.name</a></td>
+                        <td>@item.price</td>
+                        <td>@quantity</td>
+                        <td>@{item.price * quantity}</td>
+                        <td>
+                            <a href="@routes.BasketController.removeItem(item.id)"> Remove</a>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Total</td>
+                    <td>@{basket.view.map {case (i, n) => i.price * n}.sum}</td>
+                    <td>
+                        <a class="btn btn-outline-danger" href="@routes.BasketController.clearBasket()">Empty Basket</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     }
 }

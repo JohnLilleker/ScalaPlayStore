@@ -1,8 +1,8 @@
-@(items: scala.collection.mutable.ArrayBuffer[models.Item])
+@(items: scala.collection.mutable.ArrayBuffer[models.Item])(implicit messages: Messages)
 
-@display(id: Int, item: Item) = {
+@display(item: Item) = {
     <tr>
-        <td><a href="@routes.ItemController.showItem(id)">@item.name</a></td>
+        <td><a href="@routes.ItemController.showItem(item.id)">@item.name</a></td>
         <td>@item.price</td>
         <td>
         @if(!item.inStock) {
@@ -13,7 +13,8 @@
 }
 
 @main("Pokemart Online - Items") {
-    <h2>This is the items page</h2>
+
+    <h2>Our Stock</h2>
 
     @if(items.isEmpty) {
         <h5>No items to display</h5>
@@ -27,8 +28,8 @@
                 </tr>
             </thead>
             <tbody>
-                @for(i <- items.indices){
-                    @display(i, items(i))
+                @for(i <- items){
+                    @display(i)
                 }
             </tbody>
         </table>

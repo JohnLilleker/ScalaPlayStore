@@ -1,4 +1,4 @@
-@(item: models.Item)
+@(item: models.Item, form: Form[models.Basket.BuyItem])(implicit messages: Messages)
 
 @main("Pokemart Online - View Item") {
     <h2>@item.name</h2>
@@ -24,8 +24,16 @@
     </p>
     @if(item.inStock) {
         <br>
-        <a class="btn btn-outline-dark" href="@routes.BasketController.addItem(item.id)">Add to Basket</a>
+
+        @helper.form(routes.BasketController.addItem()) {
+            <input type="hidden" value="@item.id" name="id"/>
+            @helper.inputText(form("number"), '_label -> "Number of Items", '_showConstraints -> false)
+            <button type="submit" class="btn btn-outline-dark">Add to Basket</button>
+        }
+
     }
     <br><br>
+    <a href="@routes.ItemController.editItem(item.id)">Edit Item</a>
+    <br>
     <a href="@routes.ItemController.allItems()">Back</a>
 }

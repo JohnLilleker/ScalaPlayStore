@@ -23,11 +23,21 @@
                 </li>
                 @if(models.Basket.items.nonEmpty) {
                     <li class="nav-item">
-                        <a class="nav-link" href="@routes.BasketController.viewBasket()">My basket</a>
+                        <a class="nav-link" href="@routes.BasketController.viewBasket()">My basket (@{models.Basket.numberOfItems})</a>
                     </li>
                 }
             </ul>
 
+            <div class="col-sm-3 col-md-3 float-right">
+                <form class="" method="post" action="@routes.ItemController.search()">
+                    <div class="input-group">
+                        <input type="text" id="term" class="form-control" name="term" placeholder="Search for Items">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-secondary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </nav>
         <div id="content" class="container">
             @content

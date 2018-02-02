@@ -2,6 +2,7 @@ package models
 
 import play.api.data.Form
 import play.api.data.Forms._
+
 import scala.collection.mutable.ArrayBuffer
 
 case class Item(id: Int, name: String, price: Int, description: String, stock: Int) {
@@ -12,7 +13,7 @@ object Item {
 
   val createItemForm = Form(
     mapping(
-      "id" -> number,
+      "id" -> number(min=0),
       "name" -> nonEmptyText,
       "price" -> number(min=1),
       "description" -> nonEmptyText,
@@ -31,10 +32,12 @@ object Item {
     items.find(_.id == id)
   }
 
-  def filter(predicate: (Item => Boolean)): ArrayBuffer[Item] = items filter predicate
+  def findByName(term: String): ArrayBuffer[Item] = {
+    items.filter(i => i.name.toLowerCase.contains(term.toLowerCase))
+  }
 
-  def buyItem(id: Int): Boolean = {
-    changeStock(id, -1)
+  def buyItem(id: Int, quantity: Int = 1): Boolean = {
+    changeStock(id, -1*quantity)
   }
 
   def replaceItem(id: Int): Boolean = {
@@ -51,4 +54,24 @@ object Item {
       case None => false
     }
   }
+
+  def updateItem(newItem: Item): Boolean = {
+    val current = getItem(newItem.id)
+
+    current match {
+      case Some(item) =>
+        val index = items.indexOf(item)
+        items(index) = newItem
+        true
+      case None => false
+    }
+  }
+
+
+  case class Search(term: String)
+  val searchBar = Form(
+    mapping(
+      "term" -> nonEmptyText
+    )(Search.apply)(Search.unapply)
+  )
 }
